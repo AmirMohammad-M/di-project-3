@@ -1,0 +1,8 @@
+{
+  "name": "di-project-3",
+  "version": "1.0.0",
+  "main": "app.js",
+  "repository": "git@github.com:AmirMohammad-M/di-project-3.git",
+  "author": "AmirMohammad Mohseni <amirm97@live.com>",
+  "license": "MIT"
+}
