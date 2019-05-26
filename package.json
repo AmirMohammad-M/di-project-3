@@ -4,5 +4,23 @@
   "main": "app.js",
   "repository": "git@github.com:AmirMohammad-M/di-project-3.git",
   "author": "AmirMohammad Mohseni <amirm97@live.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf coverage dist tmp",
+    "start": "node dist/app.js",
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "build": "babel src -d dist --copy-files",
+    "build:watch": "babel --watch src -d dist --copy-files"
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.0.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "eslint": "^5.16.0",
+    "mongoose": "^5.5.11"
+  }
 }
