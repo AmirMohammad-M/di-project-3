@@ -8,12 +8,14 @@ import NotificationSchema from './Notification'
 import QuestionSchema from './Question'
 import QuestionTopicSchema from './QuestionTopic'
 import TopicSchema from './Topic'
+import VoteSchema from './Vote'
 
 mongoose.Promise = Promise
 mongoose.set('useCreateIndex', true)
 mongoose.connect('mongodb://mongo:27017/quora', { useNewUrlParser: true })
 
 export const Comment = mongoose.model('Comment', CommentSchema)
+export const Vote = mongoose.model('Vote', VoteSchema)
 export const Topic = mongoose.model('Topic', TopicSchema)
 export const QuestionTopic = mongoose.model('QuestionTopic', QuestionTopicSchema)
 export const Question = mongoose.model('Question', QuestionSchema)
