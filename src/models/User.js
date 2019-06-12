@@ -7,6 +7,7 @@ const schema = new Schema({
   answersCount: { type: Number, default: 0 },
   upvotesCount: { type: Number, default: 0 },
   favoriteTopics: { type: [String] },
+  masterAtTopics: { type: [String] },
   joinedAt: { type: Date, default: Date.now }
 })
 
