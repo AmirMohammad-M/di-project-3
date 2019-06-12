@@ -1,11 +1,11 @@
 import { Schema } from 'mongoose'
 
 const schema = new Schema({
-  question: { type: String, required: true },
-  questioner: { type: Schema.Types.ObjectId, required: true },
-  topics: { type: [String] },
+  content: { type: String, required: true },
+  answerer: { type: Schema.Types.ObjectId, required: true, index: true },
+  question: { type: Schema.Types.ObjectId, required: true, index: true },
   upvotesCount: { type: Number, default: 0 },
-  askedAt: { type: Date, default: Date.now }
+  answeredAt: { type: Date, default: Date.now, index: true }
 })
 
 module.exports = schema
