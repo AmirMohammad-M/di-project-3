@@ -47,6 +47,7 @@ async function view(req, res) {
       const commenter = { name: u.name, username: u.username }
       return {
         id: cm._id,
+        content: cm.content,
         commenter,
         replyTo: cm.replyToComment,
         upvotesCount: cm.upvotesCount,
