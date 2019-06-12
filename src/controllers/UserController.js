@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { User } from '../models'
+import { User, Question, Answer } from '../models'
 
 async function updateUser(req, res) {
   const { username, name, password, favoriteTopics, masterAtTopics } = req.body
@@ -23,7 +23,21 @@ async function getUserInfo(req, res) {
   const user = await User.findOne({ username }).lean()
   if (user) {
     const { password, joinedAt, __v, _id, ...userRemainder } = user
-    res.json(userRemainder)
+    const questions = await Question.find({ questioner: _id, type: 'PUBLIC' })
+      .sort({ upvotesCount: -1 })
+      .limit(3)
+    const topQuestions = questions.map((q) => {
+      const { __v, questioner, type, ...rest } = q
+      return rest
+    })
+    const answers = await Answer.find({ answerer: _id })
+      .sort({ upvotesCount: -1 })
+      .limit(3)
+    const topAnswers = questions.map((a) => {
+      const { __v, question, answerer, ...rest } = a
+      return rest
+    })
+    res.json({ user: userRemainder, topQuestions, topAnswers })
   } else res.send('Not Found!')
 }
 
