@@ -17,6 +17,11 @@ async function view(req, res) {
     const ar = await User.findById(answerer)
     const answererR = { id: ar._id, name: qr.name, username: qr.username }
 
+    const otherAnswersFromAnswerer = await Answer.find({ _id: { $neq: a._id } })
+      .sort({ upvotesCount: -1 })
+      .limit(3)
+      .lean()
+
     const cms = await Comment.find({ commentOn: 'A', replyTo: _id })
     const comments = await Promise.map(cms, async (cm) => {
       const u = await User.findById(cm.commenter).lean()
@@ -31,7 +36,7 @@ async function view(req, res) {
       }
     })
 
-    res.json({ answer: rest, answeredBy: answererR, comments })
+    res.json({ answer: rest, answeredBy: answererR, comments, otherAnswersFromAnswerer })
   }
 }
 module.exports = {
