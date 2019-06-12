@@ -10,7 +10,8 @@ import QuestionTopicSchema from './QuestionTopic'
 import TopicSchema from './Topic'
 
 mongoose.Promise = Promise
-mongoose.connect('mongodb://mongo:27017/quora')
+mongoose.set('useCreateIndex', true)
+mongoose.connect('mongodb://mongo:27017/quora', { useNewUrlParser: true })
 
 export const Comment = mongoose.model('Comment', CommentSchema)
 export const Topic = mongoose.model('Topic', TopicSchema)
