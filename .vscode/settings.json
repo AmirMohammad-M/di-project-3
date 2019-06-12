@@ -1,0 +1,10 @@
+{
+  "javascript.format.enable": false,
+  "javascript.validate.enable": false,
+  "editor.formatOnSave": true,
+  "prettier.eslintIntegration": true,
+  "html.format.unformatted": "wbr,%",
+  "cSpell.ignoreWords": [
+    "quora"
+  ]
+}
