@@ -59,6 +59,24 @@ async function getUserInfo(req, res) {
   } else res.send('Not Found!')
 }
 
+async function getMyNotifications(req, res) {
+  const notifs = await Notification.find({ destUser: req.user._id, seen: false }).sort({ createdAt: -1 })
+  await Notification.updateMany({ seen: false }, { $set: { seen: true } })
+  const resolvedNotifs = await Promise.map(notifs, async (n) => {
+    const r = { type: n.type }
+    if (type === 'ANSWER_REQUEST') {
+      r.question = n.question
+    } else if (type === 'COMMENT_ON_ANSWER') {
+      r.comment = n.comment
+    } else if (type === 'ANSWER_ON_QUESTION') {
+      r.answer = n.answer
+    }
+    r.createdAt = n.createdAt
+    return r
+  })
+  res.json({ unseenNotifications: resolvedNotifs })
+}
+
 async function upsertSU() {
   const hash = bcrypt.hashSync('123456', 10)
   const a = await User.updateOne(
@@ -79,5 +97,6 @@ module.exports = {
   getUserInfo,
   upsertSU,
   updateUser,
-  getMyProfile
+  getMyProfile,
+  getMyNotifications
 }
