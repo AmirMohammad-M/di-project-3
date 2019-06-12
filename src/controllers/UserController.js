@@ -17,6 +17,24 @@ async function updateUser(req, res) {
   ).lean()
   res.json(updated)
 }
+async function getMyProfile(req, res) {
+  const me = await User.findById(req.user.id)
+  const questions = await Question.find({ questioner: _id, type: 'PUBLIC' })
+    .sort({ askedAt: -1 })
+    .limit(3)
+  const myLastQuestions = questions.map((q) => {
+    const { __v, questioner, type, ...rest } = q
+    return rest
+  })
+  const answers = await Answer.find({ answerer: _id })
+    .sort({ answeredAt: -1 })
+    .limit(3)
+  const myLastAnswers = questions.map((a) => {
+    const { __v, question, answerer, ...rest } = a
+    return rest
+  })
+  res.json({ name: me.name, myLastQuestions, myLastAnswers })
+}
 
 async function getUserInfo(req, res) {
   const { username } = req.query
