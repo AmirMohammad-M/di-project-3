@@ -5,6 +5,7 @@ import { isAuthorized } from './controllers/AuthController'
 import UserRoutes from './routes/UserRoutes'
 import AuthRoutes from './routes/AuthRoutes'
 import QuestionRoutes from './routes/QuestionRoutes'
+import AnswerRoutes from './routes/AnswerRoutes'
 
 const app = express()
 
@@ -17,6 +18,7 @@ app.use(
 app.use('/', AuthRoutes)
 app.use('/user', isAuthorized, UserRoutes)
 app.use('/question', QuestionRoutes)
+app.use('/answer', AnswerRoutes)
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
