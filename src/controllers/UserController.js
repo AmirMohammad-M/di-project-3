@@ -18,7 +18,7 @@ async function updateUser(req, res) {
   res.json(updated)
 }
 async function getMyProfile(req, res) {
-  const me = await User.findById(req.user.id)
+  const me = await User.findById(req.user._id)
   const questions = await Question.find({ questioner: _id, type: 'PUBLIC' })
     .sort({ askedAt: -1 })
     .limit(3)
@@ -78,5 +78,6 @@ async function upsertSU() {
 module.exports = {
   getUserInfo,
   upsertSU,
-  updateUser
+  updateUser,
+  getMyProfile
 }
