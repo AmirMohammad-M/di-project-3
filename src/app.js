@@ -1,5 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
+import Promise from 'bluebird'
 import { upsertSU } from './controllers/UserController'
 import { isAuthorized } from './controllers/AuthController'
 import UserRoutes from './routes/UserRoutes'
@@ -31,9 +32,9 @@ app.get('/', (req, res) => {
 app.get('/home', isAuthorized, async (req, res) => {
   const ft = req.user.favoriteTopics[0]
   const topic = await Topic.findOne({ code: ft })
-  const questions = await QuestionTopic({ topic: topic._id }).lean()
-  const interestings = await Promise.map(questions, async (q) => {
-    const qu = await Question.findById(q).lean()
+  const questions = await QuestionTopic.find({ topic: topic._id }).lean()
+  let interestings = await Promise.map(questions, async (q) => {
+    const qu = await Question.findById(q.question).lean()
     return { question: qu.question, upvotesCount: qu.upvotesCount, id: qu._id }
   })
   interestings = interestings.sort((a, b) => {

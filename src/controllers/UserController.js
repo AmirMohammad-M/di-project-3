@@ -18,22 +18,23 @@ async function updateUser(req, res) {
   res.json(updated)
 }
 async function getMyProfile(req, res) {
-  const me = await User.findById(req.user._id)
-  const questions = await Question.find({ questioner: _id, type: 'PUBLIC' })
+  const questions = await Question.find({ questioner: req.user._id, type: 'PUBLIC' })
     .sort({ askedAt: -1 })
     .limit(3)
+    .lean()
   const myLastQuestions = questions.map((q) => {
     const { __v, questioner, type, ...rest } = q
     return rest
   })
-  const answers = await Answer.find({ answerer: _id })
+  const answers = await Answer.find({ answerer: req.user._id })
     .sort({ answeredAt: -1 })
     .limit(3)
-  const myLastAnswers = questions.map((a) => {
+    .lean()
+  const myLastAnswers = answers.map((a) => {
     const { __v, question, answerer, ...rest } = a
     return rest
   })
-  res.json({ name: me.name, myLastQuestions, myLastAnswers })
+  res.json({ name: req.user.name, myLastQuestions, myLastAnswers })
 }
 
 async function getUserInfo(req, res) {
@@ -62,7 +63,7 @@ async function getUserInfo(req, res) {
 async function getMyNotifications(req, res) {
   const notifs = await Notification.find({ destUser: req.user._id, seen: false }).sort({ createdAt: -1 })
   await Notification.updateMany({ seen: false }, { $set: { seen: true } })
-  const resolvedNotifs = await Promise.map(notifs, async (n) => {
+  const resolvedNotifs = notifs.map((n) => {
     const r = { type: n.type }
     if (type === 'ANSWER_REQUEST') {
       r.question = n.question
