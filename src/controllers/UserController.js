@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import { User, Question, Answer, Notification } from '../models'
 
 async function updateUser(req, res) {
-  const { username, name, password, favoriteTopics, masterAtTopics } = req.body
+  const { name, password, favoriteTopics, masterAtTopics } = req.body
   const hash = bcrypt.hashSync(password, 10)
   const updated = await User.updateOne(
     { username },

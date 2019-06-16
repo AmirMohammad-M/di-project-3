@@ -17,7 +17,7 @@ async function view(req, res) {
     const ar = await User.findById(answerer)
     const answererR = { id: ar._id, name: qr.name, username: qr.username }
 
-    const otherAnswersFromAnswerer = await Answer.find({ _id: { $neq: a._id } })
+    const otherAnswersFromAnswerer = await Answer.find({ _id: { $neq: _id }, answerer })
       .sort({ upvotesCount: -1 })
       .limit(3)
       .lean()
