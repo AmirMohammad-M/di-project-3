@@ -11,7 +11,7 @@ async function up(req, res) {
   let diff = 0
   if (r.nModified) {
     diff = 2
-  } else if (r.n) {
+  } else if (r.upserted) {
     diff = 1
   } else diff = 0
 
@@ -22,6 +22,7 @@ async function up(req, res) {
   } else {
     await Comment.updateOne({ _id: dest }, { $inc: { upvotesCount: diff } })
   }
+  res.send('Vote Registered.')
 }
 
 async function down(req, res) {
@@ -34,7 +35,7 @@ async function down(req, res) {
   let diff = 0
   if (r.nModified) {
     diff = -2
-  } else if (r.n) {
+  } else if (r.upserted) {
     diff = -1
   } else diff = 0
 
@@ -45,6 +46,7 @@ async function down(req, res) {
   } else {
     await Comment.updateOne({ _id: dest }, { $inc: { upvotesCount: diff } })
   }
+  res.send('Vote Registered.')
 }
 module.exports = {
   up,

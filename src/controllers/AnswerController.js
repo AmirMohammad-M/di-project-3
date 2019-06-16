@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import { User, Answer, Question } from '../models'
+import { User, Answer, Question, Notification, Comment } from '../models'
 
 async function create(req, res) {
   const { question, content } = req.body
@@ -11,13 +11,14 @@ async function create(req, res) {
 
 async function view(req, res) {
   const { answerId } = req.query
+  console.log(answerId)
   const a = await Answer.findById(answerId).lean()
   if (a) {
     const { __v, _id, answerer, ...rest } = a
     const ar = await User.findById(answerer)
-    const answererR = { id: ar._id, name: qr.name, username: qr.username }
+    const answererR = { id: ar._id, name: ar.name, username: ar.username }
 
-    const otherAnswersFromAnswerer = await Answer.find({ _id: { $neq: _id }, answerer })
+    const otherAnswersFromAnswerer = await Answer.find({ _id: { $ne: _id }, answerer })
       .sort({ upvotesCount: -1 })
       .limit(3)
       .lean()
@@ -35,9 +36,8 @@ async function view(req, res) {
         commentedAt: cm.commentedAt
       }
     })
-
     res.json({ answer: rest, answeredBy: answererR, comments, otherAnswersFromAnswerer })
-  }
+  } else res.send('Ridi')
 }
 module.exports = {
   create,

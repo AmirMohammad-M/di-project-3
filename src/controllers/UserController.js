@@ -65,11 +65,11 @@ async function getMyNotifications(req, res) {
   await Notification.updateMany({ seen: false }, { $set: { seen: true } })
   const resolvedNotifs = notifs.map((n) => {
     const r = { type: n.type }
-    if (type === 'ANSWER_REQUEST') {
+    if (n.type === 'ANSWER_REQUEST') {
       r.question = n.question
-    } else if (type === 'COMMENT_ON_ANSWER') {
+    } else if (n.type === 'COMMENT_ON_ANSWER') {
       r.comment = n.comment
-    } else if (type === 'ANSWER_ON_QUESTION') {
+    } else if (n.type === 'ANSWER_ON_QUESTION') {
       r.answer = n.answer
     }
     r.createdAt = n.createdAt

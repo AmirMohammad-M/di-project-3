@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import { Question, User, Topic, QuestionTopic, Answer } from '../models'
+import { Question, User, Topic, QuestionTopic, Answer, Comment, Notification } from '../models'
 
 async function create(req, res) {
   const { question, type, topics, requestFrom } = req.body
@@ -9,7 +9,7 @@ async function create(req, res) {
     await QuestionTopic.create({ question: q._id, topic: t._id })
   })
   await Promise.each(requestFrom.split(':'), async (username) => {
-    const u = await User.find({ username })
+    const u = await User.findOne({ username })
     await Notification.create({ type: 'ANSWER_REQUEST', destUser: u._id, question: q._id })
   })
   res.send('Question created! ' + q._id)
