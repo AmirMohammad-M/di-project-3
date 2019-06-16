@@ -8,7 +8,7 @@ const schema = new Schema({
   upvotesCount: { type: Number, default: 0 },
   favoriteTopics: { type: [String] },
   masterAtTopics: { type: [String] },
-  authToken: { type: String, index: true },
+  // authToken: { type: Schema.Types.ObjectId, index: true },
   joinedAt: { type: Date, default: Date.now }
 })
 

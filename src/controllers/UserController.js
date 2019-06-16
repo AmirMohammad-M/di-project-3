@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { User, Question, Answer } from '../models'
+import { User, Question, Answer, Notification } from '../models'
 
 async function updateUser(req, res) {
   const { username, name, password, favoriteTopics, masterAtTopics } = req.body
